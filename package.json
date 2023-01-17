@@ -5,11 +5,24 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "electron:build": "vue-cli-service electron:build",
+    "electron:serve": "vue-cli-service electron:serve",
+    "postinstall": "electron-builder install-app-deps",
+    "postuninstall": "electron-builder install-app-deps",
+    "evan": "concurrently \"npm run electron:serve\" \"node server/index.js\""
   },
+  "main": "background.js",
   "dependencies": {
+    "ant-design-vue": "^3.2.15",
+    "concurrently": "^7.6.0",
     "core-js": "^3.8.3",
+    "evanpatchouli-mysql": "^1.0.10",
+    "express": "^4.18.2",
+    "mysql": "^2.18.1",
+    "resizable-columns": "^1.0.4",
     "vue": "^3.2.13",
+    "vue-draggable-resizable": "^2.3.0",
     "vue-router": "^4.0.3",
     "vuex": "^4.0.0"
   },
@@ -21,12 +34,15 @@
     "@vue/cli-plugin-router": "~5.0.0",
     "@vue/cli-plugin-vuex": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
+    "electron": "^13.0.0",
+    "electron-devtools-installer": "^3.1.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-vue": "^8.0.3",
     "prettier": "^2.4.1",
     "sass": "^1.32.7",
-    "sass-loader": "^12.0.0"
+    "sass-loader": "^12.0.0",
+    "vue-cli-plugin-electron-builder": "~2.1.1"
   }
 }
