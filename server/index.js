@@ -1,6 +1,10 @@
-import db from "evanpatchouli-mysql/lib/sql.js";
-import express from "express";
+// import db from "evanpatchouli-mysql/lib/sql.js";
+// import express from "express";
+const express = require("express");
 const app = express();
+
+let db = require("evanpatchouli-mysql/index.js");
+db.quickConnConfig.database = "springdemo";
 
 app.get("/", (req, res) => res.send("Hello World!"));
 
@@ -18,7 +22,7 @@ app.get("/tbConstruct", async (req, res) => {
   let tbname = req.query.tbname;
   sql = sql + tbname;
   let conn = await db.conn("localhost", 3306, "root", "root", dbname);
-  let rs = await conn.get(sql);
+  let rs = await conn.sel(sql);
   conn.close();
   res.send(rs);
 });
@@ -42,7 +46,7 @@ app.get("/tbData", async (req, res) => {
   let dbname = req.query.dbname;
   let tbname = req.query.tbname;
   let conn = await db.conn("localhost", 3306, "root", "root", dbname);
-  let rs = await conn.get("select * from " + tbname);
+  let rs = await conn.sel("select * from " + tbname);
   conn.close();
   res.send(rs);
 });
@@ -50,7 +54,7 @@ app.get("/tbData", async (req, res) => {
 app.get("/users", async (req, res) => {
   db.quickConnConfig.database = "SPRINGDEMO";
   let conn = await db.conn("localhost", 3306, "root", "root", "springdemo");
-  let rs = await conn.get("select * from user");
+  let rs = await conn.sel("select * from user");
   conn.close();
   res.send(rs);
 });

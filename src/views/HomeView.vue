@@ -37,21 +37,21 @@
               >
             </a-sub-menu>
           </a-menu>
-          <!-- <a-table :dataSource="users" :columns="columns" /> -->
+          <!-- <a-table :dataSource="tbData" :columns="columns" /> -->
         </div>
       </div>
       <div class="main">
         <div class="table">
           <a-table
-            :dataSource="users"
+            :dataSource="tbData"
             :pagination="{ pageSize: 9 }"
             :scroll="{ x: 'max-content', y: clientHeight }"
           >
-            <!-- :columns="userStruct" -->
+            <!-- :columns="tbStruct" -->
             <!-- <a-table-column key="id" title="id" data-index="id" />
             <a-table-column key="name" title="name" data-index="name" /> -->
             <a-table-column
-              v-for="item in userStruct"
+              v-for="item in tbStruct"
               :key="item.Field"
               :data-index="item.Field"
               @resizeColumn="handleResizeColumn"
@@ -96,7 +96,7 @@
             <thead>
               <tr>
                 <th
-                  v-for="(value, key, index) in users[0]"
+                  v-for="(value, key, index) in tbData[0]"
                   :key="index"
                   scope="col"
                 >
@@ -106,7 +106,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item, index) in users" :key="index">
+              <tr v-for="(item, index) in tbData" :key="index">
                 <td v-for="(obj, item) in item" :key="item" scope="row">
                   <a-popover
                     title="字段信息"
@@ -132,7 +132,14 @@
             </tbody>
           </table> -->
         </div>
-        <div class="foot">@Evanpatchouli</div>
+        <div class="foot">
+          <a
+            id="githubRepo"
+            href="https://github.com/Evanpatchouli/vuemysql"
+            target="_blank"
+            ><GithubOutlined /> @Evanpatchouli-vuemysql Hope for your issues</a
+          >
+        </div>
       </div>
       <div class="right">
         工具栏
@@ -142,13 +149,13 @@
   </div>
 </template>
 <script>
-import { DatabaseOutlined } from "@ant-design/icons-vue";
+import { DatabaseOutlined, GithubOutlined } from "@ant-design/icons-vue";
 import VueDraggableResizable from "vue-draggable-resizable";
 let clientHeight = 500;
 function resetWidth() {
   let h = document.documentElement.clientHeight;
   clientHeight = h;
-  console.log(clientHeight);
+  //console.log(clientHeight);
   // let eleh = document.getElementById("h");
   // eleh.innerHTML = "h: " + h + "px";
   let w = document.documentElement.clientWidth;
@@ -177,7 +184,7 @@ window.addEventListener("resize", cancalDebounce);
 export default {
   name: "HomeView",
   // eslint-disable-next-line vue/no-unused-components
-  components: { DatabaseOutlined, VueDraggableResizable },
+  components: { DatabaseOutlined, VueDraggableResizable, GithubOutlined },
   data() {
     return {
       clientHeight: clientHeight,
@@ -185,8 +192,8 @@ export default {
         status: "off",
       },
       dbs: [],
-      users: [],
-      userStruct: [
+      tbData: [],
+      tbStruct: [
         {
           Field: "id",
           Type: "int(11)",
@@ -245,7 +252,7 @@ export default {
     document.getElementById("url").style.color = "#b7b7cb";
     document.getElementById("name").style.color = "#b7b7cb";
     window.onresize = () => {
-      console.log("高度");
+      //console.log("高度");
       //屏幕尺寸变化
       return (() => {
         this.clientHeight = document.documentElement.clientHeight - 200;
@@ -261,9 +268,9 @@ export default {
           return res.text();
         })
         .then((data) => {
-          this.dbs = JSON.parse(data).res;
-          // console.log(data);
-          console.log(this.dbs);
+          this.dbs = JSON.parse(data);
+          console.log("DB DATA:" + data);
+          console.log("所有DB:" + this.dbs);
         });
     },
     getUsers() {
@@ -274,9 +281,9 @@ export default {
           return res.text();
         })
         .then((data) => {
-          this.users = JSON.parse(data).res;
+          this.tbData = JSON.parse(data);
           // console.log(data);
-          console.log(this.users);
+          console.log(this.tbData);
         });
     },
     handleConnect() {
@@ -309,7 +316,7 @@ export default {
           return res.text();
         })
         .then((data) => {
-          data = JSON.parse(data).res;
+          data = JSON.parse(data);
           this.dbs[index].tbs = data;
           console.log(this.dbs[index]);
         });
@@ -324,10 +331,10 @@ export default {
           return res.text();
         })
         .then((data) => {
-          data = JSON.parse(data).res;
+          data = JSON.parse(data);
           console.log("tableData:");
           console.log(data);
-          this.users = data;
+          this.tbData = data;
         });
       let url2 =
         baseURL + "tbConstruct?" + "dbname=" + dbname + "&tbname=" + tbname;
@@ -338,16 +345,17 @@ export default {
           return res.text();
         })
         .then((data) => {
-          data = JSON.parse(data).res;
+          data = JSON.parse(data);
           console.log("tableConstruct:");
           console.log(data);
-          this.userStruct = data;
+          this.tbStruct = data;
         });
     },
   },
   watch: {
+    // eslint-disable-next-line no-unused-vars
     clientHeight: function (newVal, oldVal) {
-      console.log("newVal: " + newVal + " oldVal: " + oldVal);
+      //console.log("newVal: " + newVal + " oldVal: " + oldVal);
     },
   },
 };
@@ -509,6 +517,10 @@ export default {
       height: 10px;
     }
   }
+}
+
+#githubRepo {
+  color: var(--text-color);
 }
 
 ::v-deep .ant-popover-title {

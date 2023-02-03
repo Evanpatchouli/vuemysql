@@ -17,7 +17,7 @@
     "ant-design-vue": "^3.2.15",
     "concurrently": "^7.6.0",
     "core-js": "^3.8.3",
-    "evanpatchouli-mysql": "^1.0.10",
+    "evanpatchouli-mysql": "^1.0.17",
     "express": "^4.18.2",
     "mysql": "^2.18.1",
     "resizable-columns": "^1.0.4",
